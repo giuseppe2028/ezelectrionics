@@ -1,0 +1,99 @@
+@baseUrl =http://localhost:3001/ezelectronics/reviews
+#Signup
+
+POST http://localhost:3001/ezelectronics/sessions/
+Content-Type: application/json
+
+{
+    "username": "test",
+    "password":"test"
+}
+
+###
+#Add a review
+#model of product = 1
+
+POST {{baseUrl}}/1
+Content-Type: application/json
+
+{
+    "comment":"Bel prodotto",
+    "score":3
+}
+
+###
+#Retrive all review of a product:
+
+GET {{baseUrl}}/1
+
+###
+
+#Delete a specific review of a product
+
+DELETE {{baseUrl}}/1
+
+
+
+###
+
+#Insert an admin or a manager
+
+POST http://localhost:3001/ezelectronics/sessions/
+Content-Type: application/json
+
+{
+  "username": "testManager",
+  "password":"testManager"
+}
+
+
+###
+
+#Delete all reviews of a product
+
+DELETE {{baseUrl}}/1/all
+
+###
+
+#delete all reviews of all products
+
+DELETE {{baseUrl}}/
+
+
+###
+
+POST http://localhost:3001/ezelectronics/users
+Content-Type: application/json
+
+{
+  "username": "admin1",
+  "name": "A",
+  "surname": "B",
+  "password": "admin1",
+  "role": "Admin"
+}
+
+###
+
+
+POST http://localhost:3001/ezelectronics/sessions
+Content-Type: application/json
+
+{
+  "username": "admin1",
+  "password": "admin1"
+}
+
+###
+POST http://localhost:3001/ezelectronics/products
+Content-Type: application/json
+
+{
+  "model": "A",
+  "category": "Smartphone",
+  "quantity": 1,
+  "sellingPrice": 9.99,
+  "arrivalDate": "2024-05-24"
+}
+
+###

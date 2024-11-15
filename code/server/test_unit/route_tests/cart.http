@@ -1,0 +1,42 @@
+@baseUrl =http://localhost:3001/ezelectronics/carts
+#Signuphttp://localhost:3001/ezelectronics/carts
+
+POST http://localhost:3001/ezelectronics/sessions/
+Content-Type: application/json
+
+{
+  "username": "giuseppe123512",
+  "password":"prova"
+}
+
+
+
+### Get current cart
+
+GET http://localhost:3001/ezelectronics/carts/
+
+### Create a Product
+POST http://localhost:3001/ezelectronics/products
+Content-Type: application/json
+
+{
+  "model": "A",
+  "category": "Smartphone",
+  "quantity": 1,
+  "sellingPrice": 9.99,
+  "arrivalDate": "2024-05-24"
+}
+
+### Add product to cart
+
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "model": "A"
+}
+
+###
+
+GET {{baseUrl}}/history
+

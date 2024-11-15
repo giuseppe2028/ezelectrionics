@@ -1,0 +1,296 @@
+@host=http://localhost:3001/ezelectronics
+
+### Register
+POST /users
+Content-Type: application/json
+
+{
+  "username": "admin1",
+  "name": "A",
+  "surname": "B",
+  "password": "admin1",
+  "role": "Admin"
+}
+
+?? status == 200
+
+### Login
+POST /sessions
+Content-Type: application/json
+
+{
+  "username": "admin1",
+  "password": "admin1"
+}
+
+?? status == 200
+
+### Create a Product
+POST /products
+Content-Type: application/json
+
+{
+  "model": "A",
+  "category": "Smartphone",
+  "quantity": 1,
+  "sellingPrice": 9.99,
+  "arrivalDate": "2024-05-24"
+}
+
+?? status == 200
+
+### Create another Product
+POST /products
+Content-Type: application/json
+
+{
+  "model": "B",
+  "category": "Laptop",
+  "quantity": 10,
+  "sellingPrice": 999.99,
+  "arrivalDate": "2024-05-24"
+}
+
+?? status == 200
+
+### Create another Product with bad category
+POST /products
+Content-Type: application/json
+
+{
+  "model": "B",
+  "category": "Invalid",
+  "quantity": 10,
+  "sellingPrice": 999.99,
+  "arrivalDate": "2024-05-24"
+}
+
+?? status == 422
+
+### Create another Product with bad quantity
+POST /products
+Content-Type: application/json
+
+{
+  "model": "B",
+  "category": "Laptop",
+  "quantity": 0,
+  "sellingPrice": 999.99,
+  "arrivalDate": "2024-05-24"
+}
+
+?? status == 422
+
+### Create another Product with bad price
+POST /products
+Content-Type: application/json
+
+{
+  "model": "B",
+  "category": "Laptop",
+  "quantity": 10,
+  "sellingPrice": 0,
+  "arrivalDate": "2024-05-24"
+}
+
+?? status == 422
+
+### Create another Product with bad arrival date
+POST /products
+Content-Type: application/json
+
+{
+  "model": "B",
+  "category": "Laptop",
+  "quantity": 10,
+  "sellingPrice": 999.99,
+  "arrivalDate": "2044-05-24"
+}
+
+?? status == 400
+
+### Create another Product with invalid arrival date
+POST /products
+Content-Type: application/json
+
+{
+  "model": "B",
+  "category": "Laptop",
+  "quantity": 10,
+  "sellingPrice": 999.99,
+  "arrivalDate": "tegrfseda"
+}
+
+?? status == 422
+
+### Create another Product with empty arrival date
+POST /products
+Content-Type: application/json
+
+{
+  "model": "C",
+  "category": "Laptop",
+  "quantity": 10,
+  "sellingPrice": 999.99,
+  "arrivalDate": ""
+}
+
+?? status == 200
+
+### Create another Product with no arrival date
+POST /products
+Content-Type: application/json
+
+{
+  "model": "D",
+  "category": "Laptop",
+  "quantity": 10,
+  "sellingPrice": 999.99
+}
+
+?? status == 200
+
+### Add Product stock
+PATCH /products/A
+Content-Type: application/json
+
+{
+  "quantity": 10,
+  "changeDate": "2024-05-24"
+}
+
+?? status == 200
+
+### Add another Product stock
+PATCH /products/B
+Content-Type: application/json
+
+{
+  "quantity": 1,
+  "changeDate": "2024-05-24"
+}
+
+?? status == 200
+
+### Add Product stock with bad date
+PATCH /products/B
+Content-Type: application/json
+
+{
+  "quantity": 1,
+  "changeDate": "2044-05-24"
+}
+
+?? status == 400
+
+### Add Product stock with bad date relative to arrival date
+PATCH /products/B
+Content-Type: application/json
+
+{
+  "quantity": 1,
+  "changeDate": "2020-05-25"
+}
+
+?? status == 400
+
+### Sell a Product
+PATCH /products/A/sell
+Content-Type: application/json
+
+{
+  "quantity": 2,
+  "sellingDate": "2024-05-24"
+}
+
+?? status == 200
+
+### Get Products
+GET /products
+
+?? status == 200
+
+### Get Products by Category
+GET /products
+  ?grouping=category
+  &category=Smartphone
+
+?? status == 200
+
+### Get Products by Category with extra Model
+GET /products
+  ?grouping=category
+  &category=Smartphone
+  &model=A
+
+?? status == 422
+
+### Get Products by Model
+GET /products
+  ?grouping=model
+  &model=A
+
+?? status == 200
+
+### Get Products by Model with extra Category
+GET /products
+  ?grouping=model
+  &category=Smartphone
+  &model=A
+
+?? status == 422
+
+### Get Available Products
+GET /products/available
+
+?? status == 200
+
+### Get Available Products by Category
+GET /products/available
+  ?grouping=category
+  &category=Smartphone
+
+?? status == 200
+
+### Get Available Products by Category with extra Model
+GET /products/available
+  ?grouping=category
+  &category=Smartphone
+  &model=A
+
+?? status == 422
+
+### Get Available Products by Model
+GET /products/available
+  ?grouping=model
+  &model=A
+
+?? status == 200
+
+### Get Available Products by Model with extra Category
+GET /products/available
+  ?grouping=model
+  &model=A
+  &category=Smartphone
+
+?? status == 422
+
+### Delete a Product
+DELETE /products/A
+
+?? status == 200
+
+### Delete every Product
+DELETE /products
+
+?? status == 200
+
+### Delete every User
+DELETE /users
+
+?? status == 200
+
+### Delete Self
+DELETE /users/admin1
+
+?? status == 200
